@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PronoLab — Banque de vidéos</title>
+<title>Creative Toolkit — Banque de vidéos</title>
 <style>
   :root { --bg:#0f0f12; --card:#1a1a21; --text:#f2f2f5; --muted:#9a9aa8; --accent:#7c5cff; }
   * { box-sizing: border-box; }
@@ -25,11 +25,27 @@
   button:disabled { background:#3a3a48; cursor:not-allowed; }
   .empty { padding:40px 20px; color:var(--muted); }
   .note { padding:0 20px 20px; color:var(--muted); font-size:13px; }
+
+  /* Diapositives d'accueil (première ouverture) */
+  #intro { position:fixed; inset:0; background:rgba(0,0,0,.75); display:none; align-items:center; justify-content:center; padding:20px; z-index:10; }
+  #intro.show { display:flex; }
+  .slide-box { background:var(--card); border-radius:16px; max-width:460px; width:100%; padding:32px 28px; text-align:center; }
+  .slide { display:none; }
+  .slide.active { display:block; }
+  .slide .big { font-size:48px; margin-bottom:12px; }
+  .slide h2 { font-size:22px; margin:0 0 10px; }
+  .slide p { color:var(--muted); font-size:15px; line-height:1.5; margin:0; }
+  .dots { display:flex; justify-content:center; gap:8px; margin:24px 0 16px; }
+  .dot { width:8px; height:8px; border-radius:50%; background:#3a3a48; }
+  .dot.active { background:var(--accent); }
+  .slide-actions { display:flex; gap:10px; }
+  .slide-actions button { flex:1; }
+  .slide-actions .ghost { background:transparent; border:1px solid #2c2c37; color:var(--muted); }
 </style>
 </head>
 <body>
 <header>
-  <h1>PronoLab — Banque de vidéos</h1>
+  <h1>Creative Toolkit — Banque de vidéos</h1>
   <div id="quota">Chargement…</div>
 </header>
 <div class="controls">
@@ -39,9 +55,37 @@
 <main id="grid" class="grid"></main>
 <p class="note">Le compteur de téléchargements est géré dans ton navigateur. Il ne s'applique pas à l'échelle du serveur.</p>
 
+<div id="intro" role="dialog" aria-modal="true" aria-label="Bienvenue">
+  <div class="slide-box">
+    <div class="slide active">
+      <div class="big" aria-hidden="true">🎬</div>
+      <h2>Bienvenue sur Creative Toolkit</h2>
+      <p>Une banque de vidéos pour tes projets, réunie en un seul endroit.</p>
+    </div>
+    <div class="slide">
+      <div class="big" aria-hidden="true">🔍</div>
+      <h2>Cherche en un instant</h2>
+      <p>Utilise la recherche et les catégories pour trouver la vidéo qu'il te faut.</p>
+    </div>
+    <div class="slide">
+      <div class="big" aria-hidden="true">⬇️</div>
+      <h2>Télécharge simplement</h2>
+      <p>Tu peux télécharger jusqu'à 35 vidéos par jour. Le compteur est affiché en haut de la page.</p>
+    </div>
+    <div class="dots">
+      <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+    <div class="slide-actions">
+      <button class="ghost" id="skip">Passer</button>
+      <button id="next">Suivant</button>
+    </div>
+  </div>
+</div>
+
 <script>
   const LIMIT = 35;
-  const KEY = 'pronolab_downloads';
+  const KEY = 'creativetoolkit_downloads';
+  const INTRO_KEY = 'creativetoolkit_intro_seen';
   let videos = [];
 
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -66,6 +110,34 @@
     document.getElementById('quota').textContent = `Téléchargements restants aujourd'hui : ${q.remaining} / ${LIMIT}`;
   }
 
+  /* Diapositives : affichées à la première ouverture seulement */
+  let slideIndex = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+
+  function showSlide(i) {
+    slides.forEach((s, n) => s.classList.toggle('active', n === i));
+    dots.forEach((d, n) => d.classList.toggle('active', n === i));
+    document.getElementById('next').textContent = i === slides.length - 1 ? 'Commencer' : 'Suivant';
+  }
+
+  function closeIntro() {
+    document.getElementById('intro').classList.remove('show');
+    try { localStorage.setItem(INTRO_KEY, '1'); } catch {}
+  }
+
+  document.getElementById('next').addEventListener('click', () => {
+    if (slideIndex < slides.length - 1) { slideIndex++; showSlide(slideIndex); }
+    else closeIntro();
+  });
+  document.getElementById('skip').addEventListener('click', closeIntro);
+
+  function maybeShowIntro() {
+    let seen = false;
+    try { seen = localStorage.getItem(INTRO_KEY) === '1'; } catch {}
+    if (!seen) document.getElementById('intro').classList.add('show');
+  }
+
   async function init() {
     videos = await (await fetch('data/videos.json')).json();
     const cats = [...new Set(videos.map(v => v.category))];
@@ -73,6 +145,7 @@
       '<option value="">Toutes les catégories</option>' + cats.map(c => `<option>${esc(c)}</option>`).join('');
     showQuota();
     render();
+    maybeShowIntro();
   }
 
   function render() {
