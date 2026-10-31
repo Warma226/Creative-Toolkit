@@ -16,9 +16,21 @@ create table if not exists public.downloads (
   primary key (user_id, day)
 );
 
+-- Historique : une ligne par téléchargement.
+create table if not exists public.download_log (
+  id         bigint generated always as identity primary key,
+  user_id    uuid not null references auth.users(id) on delete cascade,
+  video_id   text not null,
+  title      text,
+  category   text,
+  created_at timestamptz not null default now()
+);
+create index if not exists download_log_user_idx on public.download_log (user_id, created_at desc);
+
 -- Aucun accès direct depuis le navigateur : seules les fonctions serveur lisent et écrivent.
-alter table public.accounts  enable row level security;
-alter table public.downloads enable row level security;
+alter table public.accounts     enable row level security;
+alter table public.downloads    enable row level security;
+alter table public.download_log enable row level security;
 
 -- Consomme un téléchargement de façon atomique.
 -- Renvoie le nombre restant, ou -1 si la limite du jour est atteinte.

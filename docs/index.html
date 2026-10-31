@@ -103,27 +103,112 @@
   .avatar img { width:100%; height:100%; object-fit:cover; }
   .modal { position:fixed; inset:0; z-index:40; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; padding:20px; }
   .modal.show { display:flex; }
-  .modal-box { background:var(--surface); border:1px solid var(--line); border-radius:20px; width:100%; max-width:400px; padding:28px; position:relative; }
-  .modal-close { position:absolute; top:14px; right:14px; background:none; border:0; color:var(--muted); font-size:22px; cursor:pointer; line-height:1; padding:6px; }
-  .modal-box h3 { font-family:var(--display); font-size:24px; letter-spacing:-.02em; margin:0 0 8px; }
-  .modal-box p { color:var(--muted); font-size:14px; margin:0 0 22px; }
-  .google { width:100%; display:flex; align-items:center; justify-content:center; gap:10px; background:#fff; color:#1f1f1f; border:0; border-radius:12px; padding:14px; font-family:var(--body); font-weight:500; font-size:15px; cursor:pointer; }
+  .modal-close { position:absolute; top:14px; right:14px; background:none; border:0; color:var(--muted); font-size:24px; cursor:pointer; line-height:1; padding:6px; z-index:1; }
+
+  /* Fenêtre de connexion */
+  .login-box { position:relative; width:100%; max-width:760px; display:grid; grid-template-columns:1fr 1.1fr; background:var(--surface); border:1px solid var(--line); border-radius:24px; overflow:hidden; }
+  .login-art { background:linear-gradient(160deg,#c6ff3d 0%,#3dffb0 100%); color:var(--accent-ink); padding:32px 28px; display:flex; flex-direction:column; gap:28px; }
+  .login-art .logo-mark { background:var(--accent-ink); color:var(--accent); }
+  .perks { list-style:none; margin:auto 0 0; padding:0; display:flex; flex-direction:column; gap:18px; }
+  .perks li { display:flex; gap:14px; align-items:center; }
+  .perk-ic { flex:none; width:42px; height:42px; border-radius:12px; background:rgba(11,11,13,.12); display:grid; place-items:center; font-family:var(--display); font-weight:700; font-size:15px; }
+  .perks b { display:block; font-family:var(--display); font-weight:500; font-size:16px; }
+  .perks span.d { font-size:13px; opacity:.72; }
+  .login-main { padding:40px 32px 32px; display:flex; flex-direction:column; }
+  .login-main h3 { font-family:var(--display); font-size:30px; letter-spacing:-.03em; margin:0 0 8px; }
+  .login-main > p { color:var(--muted); font-size:15px; margin:0 0 28px; }
+  .google { width:100%; display:flex; align-items:center; justify-content:center; gap:12px; background:#fff; color:#1f1f1f; border:0; border-radius:14px; padding:16px; font-family:var(--body); font-weight:500; font-size:16px; cursor:pointer; transition:transform .15s; }
   .google:hover { background:#f1f1f1; }
-  .rule { display:flex; gap:10px; align-items:flex-start; margin-top:18px; padding:12px 14px; background:var(--surface-2); border-radius:12px; font-size:13px; color:var(--muted); }
+  .google:active { transform:scale(.98); }
+  .rule { display:flex; gap:10px; align-items:flex-start; margin-top:16px; padding:12px 14px; background:var(--surface-2); border-radius:12px; font-size:13px; color:var(--muted); }
   .rule svg { flex:none; margin-top:2px; color:var(--accent); }
-  .profile { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
-  .profile .avatar { width:52px; height:52px; font-size:20px; }
-  .profile-name { font-family:var(--display); font-weight:500; font-size:18px; }
-  .profile-mail { color:var(--muted); font-size:14px; word-break:break-all; }
-  .meter { background:var(--surface-2); border-radius:14px; padding:16px; margin-bottom:16px; }
-  .meter-top { display:flex; justify-content:space-between; font-size:14px; color:var(--muted); margin-bottom:10px; }
-  .meter-top b { color:var(--text); font-weight:500; }
-  .bar { height:8px; background:var(--line); border-radius:999px; overflow:hidden; }
-  .bar span { display:block; height:100%; background:var(--accent); border-radius:999px; transition:width .4s; }
-  .logout { width:100%; background:transparent; color:var(--text); border:1px solid var(--line); border-radius:12px; padding:13px; font-family:var(--body); font-size:15px; cursor:pointer; }
-  .logout:hover { border-color:#44444f; }
-  .alert { display:none; margin-top:16px; padding:12px 14px; border-radius:12px; background:#3a1518; color:#ffb4b4; font-size:14px; }
+  .fine { margin:auto 0 0; padding-top:22px; font-size:12px; color:#6b6b76; }
+  .alert { display:none; margin-top:14px; padding:12px 14px; border-radius:12px; background:#3a1518; color:#ffb4b4; font-size:14px; }
   .alert.show { display:block; }
+
+  /* Menu rapide sous l'avatar */
+  .nav-right { position:relative; }
+  .menu { position:absolute; top:calc(100% + 10px); right:0; width:290px; background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:8px; z-index:30; box-shadow:0 20px 50px rgba(0,0,0,.5); }
+  .menu-head { display:flex; gap:12px; align-items:center; padding:12px 10px; }
+  .menu-head .avatar { width:40px; height:40px; font-size:16px; }
+  .menu-name { font-weight:500; font-size:15px; }
+  .menu-mail { color:var(--muted); font-size:13px; word-break:break-all; }
+  .menu-meter { margin:4px 6px 8px; padding:12px; background:var(--surface-2); border-radius:12px; }
+  .menu-item { width:100%; display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:10px; background:none; border:0; color:var(--text); font-family:var(--body); font-size:14px; cursor:pointer; text-align:left; }
+  .menu-item:hover { background:var(--surface-2); }
+  .menu-item svg { color:var(--muted); }
+  .menu-sep { height:1px; background:var(--line); margin:6px 4px; }
+  .menu-item.danger { color:#ff8a8a; }
+  .menu-item.danger svg { color:#ff8a8a; }
+  .meter-top { display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:8px; }
+  .meter-top b { color:var(--text); font-weight:500; }
+  .bar { height:6px; background:var(--line); border-radius:999px; overflow:hidden; }
+  .bar span { display:block; height:100%; background:var(--accent); border-radius:999px; transition:width .4s; }
+
+  /* Page Mon compte */
+  .back { display:inline-flex; align-items:center; gap:8px; color:var(--muted); font-size:14px; margin:12px 0 28px; }
+  .back:hover { color:var(--text); }
+  .acc-hero { display:flex; align-items:center; gap:22px; margin-bottom:32px; }
+  .avatar.xl { width:88px; height:88px; font-size:34px; font-family:var(--display); font-weight:700; flex:none; }
+  .acc-hero h1 { font-family:var(--display); font-size:clamp(28px,5vw,44px); letter-spacing:-.03em; line-height:1.05; margin:0 0 4px; }
+  .acc-mail { color:var(--muted); font-size:15px; word-break:break-all; }
+  .badges { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .badge { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:5px 11px; }
+  .badge.ok { color:var(--accent); border-color:rgba(198,255,61,.35); }
+  .acc-grid { display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:16px; margin-bottom:48px; }
+  .acc-card { background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:22px; display:flex; flex-direction:column; justify-content:space-between; gap:14px; min-height:150px; }
+  .acc-card .k { color:var(--muted); font-size:14px; }
+  .acc-card .v { font-family:var(--display); font-size:44px; font-weight:700; letter-spacing:-.03em; line-height:1; }
+  .acc-card .v small { font-size:18px; color:var(--muted); font-weight:500; }
+  .ring-card { flex-direction:row; align-items:center; justify-content:flex-start; gap:22px; }
+  .ring { position:relative; width:116px; height:116px; flex:none; }
+  .ring svg { transform:rotate(-90deg); }
+  .ring circle { fill:none; stroke-width:10; }
+  .ring .bg { stroke:var(--line); }
+  .ring .fg { stroke:var(--accent); stroke-linecap:round; transition:stroke-dashoffset .6s; }
+  .ring-center { position:absolute; inset:0; display:grid; place-items:center; text-align:center; }
+  .ring-center strong { display:block; font-family:var(--display); font-size:32px; line-height:1; }
+  .ring-center span { font-size:12px; color:var(--muted); }
+  .ring-text b { display:block; font-family:var(--display); font-weight:500; font-size:18px; margin-bottom:4px; }
+  .ring-text span { color:var(--muted); font-size:14px; }
+  .acc-section { margin-bottom:48px; scroll-margin-top:20px; }
+  .hist-day { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:22px 0 10px; }
+  .hist-day:first-child { margin-top:0; }
+  .hist-row { display:flex; align-items:center; gap:14px; padding:12px; background:var(--surface); border:1px solid var(--line); border-radius:14px; margin-bottom:8px; }
+  .hist-thumb { width:64px; height:40px; border-radius:8px; flex:none; display:grid; place-items:center; }
+  .hist-info { flex:1; min-width:0; }
+  .hist-title { font-weight:500; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .hist-meta { color:var(--muted); font-size:13px; }
+  .hist-btn { flex:none; background:var(--surface-2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:9px 14px; font-family:var(--body); font-size:13px; cursor:pointer; display:flex; align-items:center; gap:6px; }
+  .hist-btn:hover { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+  .hist-empty { text-align:center; padding:48px 20px; background:var(--surface); border:1px dashed var(--line); border-radius:20px; color:var(--muted); }
+  .hist-empty b { display:block; color:var(--text); font-family:var(--display); font-weight:500; font-size:18px; margin:14px 0 6px; }
+  .hist-empty a { display:inline-block; margin-top:16px; color:var(--accent); }
+  .sec-list { background:var(--surface); border:1px solid var(--line); border-radius:20px; overflow:hidden; }
+  .sec-row { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; }
+  .sec-row + .sec-row { border-top:1px solid var(--line); }
+  .sec-row b { display:block; font-weight:500; font-size:15px; margin-bottom:2px; }
+  .sec-row span { color:var(--muted); font-size:13px; }
+  .sec-row code { font-family:ui-monospace, monospace; font-size:14px; background:var(--surface-2); padding:6px 10px; border-radius:8px; white-space:nowrap; }
+  .pill-ok { color:var(--accent); font-size:13px; white-space:nowrap; }
+  .logout { margin-top:16px; background:transparent; color:#ff8a8a; border:1px solid #4a2326; border-radius:12px; padding:13px 22px; font-family:var(--body); font-size:15px; cursor:pointer; }
+  .logout:hover { background:#2a1214; }
+
+  @media (max-width:720px) {
+    .login-box { grid-template-columns:1fr; max-width:420px; }
+    .login-art { padding:24px 24px 22px; gap:18px; }
+    .perks { flex-direction:row; justify-content:space-between; gap:8px; }
+    .perks li { flex-direction:column; text-align:center; gap:8px; flex:1; }
+    .perks b { font-size:13px; }
+    .perks span.d { display:none; }
+    .login-main { padding:28px 24px 24px; }
+    .acc-grid { grid-template-columns:1fr 1fr; }
+    .ring-card { grid-column:1/-1; }
+    .acc-hero { gap:16px; }
+    .avatar.xl { width:68px; height:68px; font-size:26px; }
+    .acc-card .v { font-size:34px; }
+    .sec-row { flex-direction:column; align-items:flex-start; }
+  }
   .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px); background:var(--text); color:var(--bg); padding:12px 18px; border-radius:12px; font-size:14px; opacity:0; transition:opacity .3s, transform .3s; z-index:60; pointer-events:none; max-width:calc(100% - 32px); text-align:center; }
   .toast.show { opacity:1; transform:translateX(-50%); }
 
@@ -179,39 +264,31 @@
   </div>
 </div>
 
-<div class="modal" id="account-modal" role="dialog" aria-modal="true" aria-labelledby="account-title">
-  <div class="modal-box">
+<div class="modal" id="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-title">
+  <div class="login-box">
     <button class="modal-close" id="modal-close" aria-label="Fermer">×</button>
-
-    <div id="view-out">
-      <h3 id="account-title">Ton espace</h3>
-      <p>Connecte-toi avec ton compte Google pour télécharger jusqu'à 35 vidéos par jour.</p>
+    <div class="login-art">
+      <div class="logo"><span class="logo-mark">✦</span>Creative Toolkit</div>
+      <ul class="perks">
+        <li><span class="perk-ic">35</span><div><b>Par jour</b><span class="d">Remis à zéro chaque nuit.</span></div></li>
+        <li><span class="perk-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></span><div><b>Historique</b><span class="d">Retrouve toutes tes vidéos.</span></div></li>
+        <li><span class="perk-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span><div><b>Protégé</b><span class="d">Lié à une seule adresse IP.</span></div></li>
+      </ul>
+    </div>
+    <div class="login-main">
+      <h3 id="login-title">Connexion</h3>
+      <p>Un clic avec ton compte Google, sans mot de passe à retenir.</p>
       <button class="google" id="google-btn">
         <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
         Continuer avec Google
       </button>
       <div class="rule">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
-        <span>Un seul compte par adresse IP. Ton compte reste lié à l'adresse IP utilisée lors de ta première connexion.</span>
+        <span>Un seul compte par adresse IP. Ton compte reste lié à l'adresse IP de ta première connexion.</span>
       </div>
+      <div class="alert" id="account-alert" role="alert"></div>
+      <p class="fine">En continuant, tu acceptes que ton compte soit associé à ton adresse IP.</p>
     </div>
-
-    <div id="view-in" hidden>
-      <div class="profile">
-        <div class="avatar" id="profile-avatar"></div>
-        <div>
-          <div class="profile-name" id="profile-name"></div>
-          <div class="profile-mail" id="profile-mail"></div>
-        </div>
-      </div>
-      <div class="meter">
-        <div class="meter-top"><span>Téléchargements aujourd'hui</span><b id="meter-text">0 / 35</b></div>
-        <div class="bar"><span id="meter-bar" style="width:0%"></span></div>
-      </div>
-      <button class="logout" id="logout-btn">Se déconnecter</button>
-    </div>
-
-    <div class="alert" id="account-alert" role="alert"></div>
   </div>
 </div>
 
@@ -222,10 +299,63 @@
     <a href="#" class="logo"><span class="logo-mark">✦</span>Creative Toolkit</a>
     <div class="nav-right">
       <div class="quota" id="quota" hidden><span class="q-label">Restants aujourd'hui : </span><b id="quota-left">35</b> / 35</div>
-      <button class="account-btn out" id="account-btn"><span class="acc-label">Se connecter</span></button>
+      <button class="account-btn out" id="account-btn" aria-haspopup="true" aria-expanded="false"><span class="acc-label">Se connecter</span></button>
+      <div class="menu" id="account-menu" hidden>
+        <div class="menu-head"><span class="avatar" id="menu-avatar"></span><div><div class="menu-name" id="menu-name"></div><div class="menu-mail" id="menu-mail"></div></div></div>
+        <div class="menu-meter">
+          <div class="meter-top"><span>Aujourd'hui</span><b id="menu-meter-text">0 / 35</b></div>
+          <div class="bar"><span id="menu-bar" style="width:0%"></span></div>
+        </div>
+        <a class="menu-item" href="#compte"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Mon compte</a>
+        <a class="menu-item" href="#historique"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>Historique</a>
+        <div class="menu-sep"></div>
+        <button class="menu-item danger" data-logout><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l-5-5 5-5M5 12h11"/></svg>Se déconnecter</button>
+      </div>
     </div>
   </nav>
 
+  <section id="account-view" hidden>
+    <a href="#" class="back"><span aria-hidden="true">←</span> Retour au catalogue</a>
+    <div class="acc-hero">
+      <div class="avatar xl" id="acc-avatar"></div>
+      <div>
+        <h1 id="acc-name"></h1>
+        <div class="acc-mail" id="acc-mail"></div>
+        <div class="badges">
+          <span class="badge ok">✓ Connecté avec Google</span>
+          <span class="badge" id="acc-since"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-grid">
+      <div class="acc-card ring-card">
+        <div class="ring">
+          <svg width="116" height="116" viewBox="0 0 116 116" aria-hidden="true"><circle class="bg" cx="58" cy="58" r="50"/><circle class="fg" id="ring-fg" cx="58" cy="58" r="50" stroke-dasharray="314.16" stroke-dashoffset="0"/></svg>
+          <div class="ring-center"><div><strong id="ring-left">35</strong><span>restants</span></div></div>
+        </div>
+        <div class="ring-text"><b>Quota du jour</b><span>Remise à zéro dans <span id="reset-in">—</span></span></div>
+      </div>
+      <div class="acc-card"><div class="k">Téléchargés aujourd'hui</div><div class="v" id="acc-today">0<small> / 35</small></div></div>
+      <div class="acc-card"><div class="k">Total téléchargé</div><div class="v" id="acc-total">0</div></div>
+    </div>
+
+    <div class="acc-section" id="historique">
+      <div class="section-head"><h2>Historique</h2><span id="hist-count"></span></div>
+      <div id="hist-list"></div>
+    </div>
+
+    <div class="acc-section">
+      <div class="section-head"><h2>Sécurité</h2></div>
+      <div class="sec-list">
+        <div class="sec-row"><div><b>Adresse IP liée</b><span>Ton compte fonctionne uniquement depuis cette adresse.</span></div><code id="acc-ip">—</code></div>
+        <div class="sec-row"><div><b>Méthode de connexion</b><span>Compte Google</span></div><span class="pill-ok">● Actif</span></div>
+      </div>
+      <button class="logout" data-logout>Se déconnecter</button>
+    </div>
+  </section>
+
+  <div id="home-view">
   <header class="hero">
     <span class="eyebrow">Banque de vidéos créatives</span>
     <h1>Des vidéos prêtes pour <em>tes idées</em>.</h1>
@@ -249,6 +379,7 @@
     <span id="result-count"></span>
   </div>
   <main class="grid" id="grid"></main>
+  </div>
 
   <footer>
     <span>© Creative Toolkit</span>
@@ -276,15 +407,15 @@
   const CFG = window.CT_CONFIG || {};
   const CONFIGURED = !!(CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY && window.supabase);
   const sb = CONFIGURED ? window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY) : null;
-  const state = { session: null, remaining: null, checkedUser: null };
+  const state = { session: null, remaining: null, checkedUser: null, account: null };
   const $ = id => document.getElementById(id);
 
-  async function callFn(name) {
+  async function callFn(name, payload = {}) {
     try {
       const res = await fetch(`${CFG.SUPABASE_URL}/functions/v1/${name}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${state.session.access_token}`, apikey: CFG.SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
-        body: '{}'
+        body: JSON.stringify(payload)
       });
       let body = {}; try { body = await res.json(); } catch {}
       return { ok: res.ok, status: res.status, body };
@@ -299,8 +430,28 @@
     clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
   }
   function showAlert(msg) { const a = $('account-alert'); a.textContent = msg || ''; a.classList.toggle('show', !!msg); }
-  function openModal() { $('account-modal').classList.add('show'); }
-  function closeModal() { $('account-modal').classList.remove('show'); showAlert(''); }
+  function openModal() { closeMenu(); $('login-modal').classList.add('show'); }
+  function closeModal() { $('login-modal').classList.remove('show'); showAlert(''); }
+  function openMenu() { $('account-menu').hidden = false; $('account-btn').setAttribute('aria-expanded', 'true'); }
+  function closeMenu() { $('account-menu').hidden = true; $('account-btn').setAttribute('aria-expanded', 'false'); }
+
+  const fmtDate = d => new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const fmtTime = d => new Date(d).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  function dayLabel(d) {
+    const day = new Date(d); const now = new Date();
+    const key = x => x.toDateString();
+    if (key(day) === key(now)) return "Aujourd'hui";
+    const y = new Date(now); y.setDate(now.getDate() - 1);
+    if (key(day) === key(y)) return 'Hier';
+    return fmtDate(d);
+  }
+  function gradFor(id) { let h = 0; for (const c of String(id)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return GRADS[h % GRADS.length]; }
+  function resetIn() {
+    const now = new Date();
+    const next = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1);
+    const m = Math.max(0, Math.round((next - now) / 60000));
+    return `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')}`;
+  }
 
   function profile() {
     const u = state.session?.user; if (!u) return null;
@@ -319,25 +470,91 @@
       btn.setAttribute('aria-label', 'Mon compte');
       $('quota').hidden = state.remaining === null;
       $('quota-left').textContent = state.remaining ?? '–';
-      $('view-out').hidden = true; $('view-in').hidden = false;
-      $('profile-avatar').innerHTML = avatarHTML(p);
-      $('profile-name').textContent = p.name;
-      $('profile-mail').textContent = p.email;
       const used = state.remaining === null ? 0 : LIMIT - state.remaining;
-      $('meter-text').textContent = `${used} / ${LIMIT}`;
-      $('meter-bar').style.width = `${(used / LIMIT) * 100}%`;
+      const left = LIMIT - used;
+
+      // Menu rapide
+      $('menu-avatar').innerHTML = avatarHTML(p);
+      $('menu-name').textContent = p.name;
+      $('menu-mail').textContent = p.email;
+      $('menu-meter-text').textContent = `${used} / ${LIMIT}`;
+      $('menu-bar').style.width = `${(used / LIMIT) * 100}%`;
+
+      // Page Mon compte
+      const acc = state.account || {};
+      $('acc-avatar').innerHTML = avatarHTML(p);
+      $('acc-name').textContent = p.name;
+      $('acc-mail').textContent = p.email;
+      $('acc-since').textContent = acc.member_since ? `Membre depuis le ${fmtDate(acc.member_since)}` : 'Nouveau membre';
+      $('ring-left').textContent = left;
+      $('ring-fg').style.strokeDashoffset = `${314.16 * (used / LIMIT)}`;
+      $('reset-in').textContent = resetIn();
+      $('acc-today').innerHTML = `${used}<small> / ${LIMIT}</small>`;
+      $('acc-total').textContent = acc.total ?? 0;
+      $('acc-ip').textContent = acc.ip_masked || '—';
+      renderHistory();
     } else {
       btn.classList.add('out');
       btn.innerHTML = '<span class="acc-label">Se connecter</span>';
       btn.removeAttribute('aria-label');
       $('quota').hidden = true;
-      $('view-out').hidden = false; $('view-in').hidden = true;
+      closeMenu();
     }
   }
 
+  function renderHistory() {
+    const list = (state.account && state.account.history) || [];
+    $('hist-count').textContent = list.length ? `${list.length} vidéo${list.length > 1 ? 's' : ''}` : '';
+    if (!list.length) {
+      $('hist-list').innerHTML = `
+        <div class="hist-empty">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg>
+          <b>Aucun téléchargement pour l'instant</b>
+          Les vidéos que tu télécharges apparaîtront ici.
+          <br><a href="#">Parcourir le catalogue →</a>
+        </div>`;
+      return;
+    }
+    let lastDay = null;
+    $('hist-list').innerHTML = list.map(h => {
+      const day = dayLabel(h.created_at);
+      const head = day !== lastDay ? `<div class="hist-day">${esc(day)}</div>` : '';
+      lastDay = day;
+      const exists = videos.some(v => v.id === h.video_id);
+      return `${head}
+        <div class="hist-row">
+          <div class="hist-thumb" style="background:linear-gradient(135deg,${gradFor(h.video_id)})"><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="hist-info">
+            <div class="hist-title">${esc(h.title || h.video_id)}</div>
+            <div class="hist-meta">${h.category ? esc(h.category) + ' · ' : ''}${fmtTime(h.created_at)}</div>
+          </div>
+          ${exists ? `<button class="hist-btn" data-redl="${esc(h.video_id)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>Retélécharger</button>` : ''}
+        </div>`;
+    }).join('');
+  }
+
+  /* Navigation : #compte et #historique affichent la page compte */
+  function route() {
+    const h = location.hash;
+    const wantsAccount = h === '#compte' || h === '#historique';
+    const show = wantsAccount && !!state.session;
+    $('account-view').hidden = !show;
+    $('home-view').hidden = show;
+    closeMenu();
+    if (wantsAccount && !state.session && state.ready) { openModal(); history.replaceState(null, '', location.pathname); }
+    if (show) {
+      if (h === '#historique') $('historique').scrollIntoView();
+      else window.scrollTo(0, 0);
+    }
+  }
+  window.addEventListener('hashchange', route);
+
   async function onSession(session) {
     state.session = session;
-    if (!session) { state.remaining = null; state.checkedUser = null; renderAccount(); render(); return; }
+    if (!session) {
+      Object.assign(state, { remaining: null, checkedUser: null, account: null, ready: true });
+      renderAccount(); render(); route(); return;
+    }
     if (state.checkedUser === session.user.id) { renderAccount(); return; }
     renderAccount();
     const r = await callFn('account');
@@ -348,8 +565,11 @@
       return;
     }
     state.checkedUser = session.user.id;
+    state.account = r.body;
     state.remaining = r.body.remaining;
-    renderAccount(); render();
+    state.ready = true;
+    closeModal();
+    renderAccount(); render(); route();
   }
 
   if (sb) {
@@ -358,17 +578,28 @@
     });
   }
 
-  $('account-btn').addEventListener('click', openModal);
+  $('account-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    if (!state.session) return openModal();
+    $('account-menu').hidden ? openMenu() : closeMenu();
+  });
+  document.addEventListener('click', e => { if (!e.target.closest('#account-menu')) closeMenu(); });
   $('modal-close').addEventListener('click', closeModal);
-  $('account-modal').addEventListener('click', e => { if (e.target.id === 'account-modal') closeModal(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  $('login-modal').addEventListener('click', e => { if (e.target.id === 'login-modal') closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeMenu(); } });
+  setInterval(() => { if (state.session) $('reset-in').textContent = resetIn(); }, 30000);
   $('google-btn').addEventListener('click', async () => {
     if (!sb) { showAlert("La connexion n'est pas encore configurée. Suis le guide SETUP.md du projet."); return; }
     showAlert('');
     const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + location.pathname } });
     if (error) showAlert('Connexion Google impossible. Réessaie.');
   });
-  $('logout-btn').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); closeModal(); toast('Tu es déconnecté.'); });
+  document.querySelectorAll('[data-logout]').forEach(b => b.addEventListener('click', async () => {
+    closeMenu();
+    if (sb) await sb.auth.signOut();
+    history.replaceState(null, '', location.pathname); route();
+    toast('Tu es déconnecté.');
+  }));
 
   /* Diapositives de première ouverture */
   const slides = [...document.querySelectorAll('.slide')];
@@ -435,14 +666,20 @@
   }
 
   let downloading = false;
-  document.getElementById('grid').addEventListener('click', async e => {
-    const b = e.target.closest('.dl'); if (!b) return;
-    const v = videos.find(x => x.id === b.dataset.id); if (!v) return;
+  document.getElementById('grid').addEventListener('click', e => {
+    const b = e.target.closest('.dl'); if (b) downloadVideo(b.dataset.id, b);
+  });
+  $('hist-list').addEventListener('click', e => {
+    const b = e.target.closest('[data-redl]'); if (b) downloadVideo(b.dataset.redl, b);
+  });
+
+  async function downloadVideo(id, b) {
+    const v = videos.find(x => x.id === id); if (!v) return;
     if (!state.session) { openModal(); return; }
     if (state.remaining === 0) { toast(`Limite de ${LIMIT} téléchargements atteinte pour aujourd'hui.`); return; }
     if (downloading) return;
     downloading = true; b.setAttribute('aria-busy', 'true');
-    const r = await callFn('download');
+    const r = await callFn('download', { video_id: v.id, title: v.title, category: v.category });
     downloading = false; b.removeAttribute('aria-busy');
     if (!r.ok) {
       if (r.status === 429) state.remaining = 0;
@@ -452,12 +689,17 @@
       return;
     }
     state.remaining = r.body.remaining;
+    if (state.account) {
+      const entry = r.body.entry || { video_id: v.id, title: v.title, category: v.category, created_at: new Date().toISOString() };
+      state.account.history = [entry, ...(state.account.history || [])].slice(0, 50);
+      state.account.total = (state.account.total || 0) + 1;
+    }
     const a = document.createElement('a');
     a.href = `uploads/${encodeURIComponent(v.file)}`; a.download = v.file;
     document.body.appendChild(a); a.click(); a.remove();
     renderAccount(); render();
     toast(`Téléchargement lancé. Il t'en reste ${state.remaining} aujourd'hui.`);
-  });
+  }
 
   document.getElementById('search').addEventListener('input', render);
   document.getElementById('search-form').addEventListener('submit', e => {
@@ -469,6 +711,7 @@
     try { videos = await (await fetch('data/videos.json')).json(); } catch { videos = []; }
     document.getElementById('stat-count').textContent = videos.length;
     renderAccount(); renderPills(); render();
+    if (!sb) { state.ready = true; route(); }
   })();
 </script>
 </body>

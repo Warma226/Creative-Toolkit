@@ -16,7 +16,14 @@ export const cors = {
 export const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...cors, "Content-Type": "application/json" } });
 
-type GuardOk = { ok: true; user: User; admin: SupabaseClient };
+type Account = { ip: string; created_at: string };
+type GuardOk = { ok: true; user: User; admin: SupabaseClient; account: Account };
+
+// Masque l'adresse IP avant de l'afficher : 41.202.•••.••• ou 2a01:cb08:••••
+export function maskIp(ip: string): string {
+  if (ip.includes(".")) { const p = ip.split("."); return `${p[0]}.${p[1]}.•••.•••`; }
+  const p = ip.split(":"); return `${p[0]}:${p[1] ?? ""}:••••`;
+}
 type GuardErr = { ok: false; res: Response };
 
 export async function guard(req: Request): Promise<GuardOk | GuardErr> {
@@ -30,19 +37,21 @@ export async function guard(req: Request): Promise<GuardOk | GuardErr> {
   const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim();
   if (!ip) return { ok: false, res: json({ error: "Adresse IP introuvable." }, 400) };
 
-  const { data: account } = await admin.from("accounts").select("ip").eq("user_id", user.id).maybeSingle();
+  let { data: account } = await admin.from("accounts").select("ip, created_at").eq("user_id", user.id).maybeSingle();
 
   if (!account) {
     // Première connexion : on lie le compte à cette adresse IP, si elle est libre.
-    const { error: insertError } = await admin.from("accounts").insert({ user_id: user.id, email: user.email, ip });
-    if (insertError) {
+    const { data: created, error: insertError } = await admin.from("accounts")
+      .insert({ user_id: user.id, email: user.email, ip }).select("ip, created_at").single();
+    if (insertError || !created) {
       return { ok: false, res: json({ error: "Un compte existe déjà pour cette adresse IP.", code: "ip_taken" }, 403) };
     }
+    account = created;
   } else if (STRICT_IP && account.ip !== ip) {
     return { ok: false, res: json({ error: "Ce compte est lié à une autre adresse IP.", code: "ip_mismatch" }, 403) };
   }
 
-  return { ok: true, user, admin };
+  return { ok: true, user, admin, account: account as Account };
 }
 
 export async function usedToday(admin: SupabaseClient, userId: string): Promise<number> {
