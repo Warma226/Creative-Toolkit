@@ -30,7 +30,12 @@ Le site est hébergé sur GitHub Pages, qui n'a pas de serveur. La connexion Goo
    - Redirect URLs : ajoute `https://warma226.github.io/Creative-Toolkit/`
 
 ## 5. Déployer les fonctions serveur
-Sur ton ordinateur, avec Node.js installé, dans le dossier du projet :
+
+**Sans terminal (le plus simple)** : dans Supabase, **Edge Functions** > **Deploy a new function** > **Via Editor**.
+1. Nomme la fonction `account`, efface le code d'exemple, colle tout `supabase/dashboard/account.ts`, puis **Deploy**.
+2. Recommence avec une fonction nommée `download` et le fichier `supabase/dashboard/download.ts`.
+
+**Avec un terminal** : sur ton ordinateur, avec Node.js installé, dans le dossier du projet :
 
 ```
 npx supabase login
