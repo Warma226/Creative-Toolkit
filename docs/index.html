@@ -3,189 +3,473 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Creative Toolkit — Banque de vidéos</title>
+<title>Creative Toolkit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#0f0f12; --card:#1a1a21; --text:#f2f2f5; --muted:#9a9aa8; --accent:#7c5cff; }
-  * { box-sizing: border-box; }
-  body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--text); }
-  header { padding:20px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; border-bottom:1px solid #26262f; }
-  h1 { font-size:20px; margin:0; }
-  #quota { color:var(--muted); font-size:14px; }
-  .controls { padding:16px 20px; display:flex; gap:10px; flex-wrap:wrap; }
-  input, select { background:var(--card); color:var(--text); border:1px solid #2c2c37; border-radius:8px; padding:10px 12px; font-size:15px; }
-  input { flex:1; min-width:200px; }
-  .grid { padding:0 20px 40px; display:grid; gap:16px; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); }
-  .card { background:var(--card); border-radius:12px; overflow:hidden; display:flex; flex-direction:column; }
-  .thumb { aspect-ratio:16/9; background:#26262f; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:13px; }
-  .body { padding:14px; display:flex; flex-direction:column; gap:8px; flex:1; }
-  .cat { color:var(--accent); font-size:12px; text-transform:uppercase; letter-spacing:.05em; }
-  .title { font-weight:600; }
-  .desc { color:var(--muted); font-size:14px; flex:1; }
-  button { background:var(--accent); color:#fff; border:0; border-radius:8px; padding:10px; font-size:15px; cursor:pointer; }
-  button:disabled { background:#3a3a48; cursor:not-allowed; }
-  .empty { padding:40px 20px; color:var(--muted); }
-  .note { padding:0 20px 20px; color:var(--muted); font-size:13px; }
+  :root {
+    --bg:#0b0b0d; --surface:#141418; --surface-2:#1c1c22; --line:#2a2a32;
+    --text:#f4f4f6; --muted:#9b9ba6; --accent:#c6ff3d; --accent-ink:#0b0b0d;
+    --display:'Space Grotesk', system-ui, sans-serif; --body:'Inter', system-ui, sans-serif;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; }
+  body { background:var(--bg); color:var(--text); font-family:var(--body); line-height:1.5; }
+  a { color:inherit; text-decoration:none; }
+  .wrap { max-width:1120px; margin:0 auto; padding:0 20px; }
 
-  /* Diapositives d'accueil (première ouverture) */
-  #intro { position:fixed; inset:0; background:rgba(0,0,0,.75); display:none; align-items:center; justify-content:center; padding:20px; z-index:10; }
-  #intro.show { display:flex; }
-  .slide-box { background:var(--card); border-radius:16px; max-width:460px; width:100%; padding:32px 28px; text-align:center; }
-  .slide { display:none; }
-  .slide.active { display:block; }
-  .slide .big { font-size:48px; margin-bottom:12px; }
-  .slide h2 { font-size:22px; margin:0 0 10px; }
-  .slide p { color:var(--muted); font-size:15px; line-height:1.5; margin:0; }
-  .dots { display:flex; justify-content:center; gap:8px; margin:24px 0 16px; }
-  .dot { width:8px; height:8px; border-radius:50%; background:#3a3a48; }
-  .dot.active { background:var(--accent); }
-  .slide-actions { display:flex; gap:10px; }
-  .slide-actions button { flex:1; }
-  .slide-actions .ghost { background:transparent; border:1px solid #2c2c37; color:var(--muted); }
+  /* Barre du haut */
+  .nav { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:18px 0; }
+  .logo { font-family:var(--display); font-weight:700; font-size:18px; letter-spacing:-.01em; display:flex; align-items:center; gap:10px; }
+  .logo-mark { width:26px; height:26px; border-radius:7px; background:var(--accent); display:grid; place-items:center; color:var(--accent-ink); font-size:14px; }
+  .quota { font-size:13px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:6px 12px; white-space:nowrap; }
+  .quota b { color:var(--accent); font-weight:500; }
+
+  /* Hero */
+  .hero { padding:56px 0 40px; text-align:center; }
+  .eyebrow { display:inline-block; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
+  .hero h1 { font-family:var(--display); font-weight:700; font-size:clamp(36px, 7vw, 76px); line-height:1.02; letter-spacing:-.03em; margin:0 auto 18px; max-width:900px; }
+  .hero h1 em { font-style:normal; color:var(--accent); }
+  .hero p { color:var(--muted); font-size:clamp(15px, 2vw, 18px); max-width:560px; margin:0 auto 32px; }
+
+  /* Grande recherche */
+  .search { max-width:760px; margin:0 auto; display:flex; align-items:center; gap:12px; background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:10px 10px 10px 22px; transition:border-color .2s; }
+  .search:focus-within { border-color:var(--accent); }
+  .search svg { flex:none; color:var(--muted); }
+  .search input { flex:1; min-width:0; background:transparent; border:0; outline:0; color:var(--text); font-family:var(--body); font-size:clamp(16px, 2.2vw, 20px); padding:14px 0; }
+  .search input::placeholder { color:#6b6b76; }
+  .search button { flex:none; background:var(--accent); color:var(--accent-ink); border:0; border-radius:12px; padding:16px 24px; font-family:var(--display); font-weight:500; font-size:16px; cursor:pointer; }
+
+  .pills { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:20px; }
+  .pill { font-size:14px; color:var(--muted); border:1px solid var(--line); background:transparent; border-radius:999px; padding:8px 16px; cursor:pointer; font-family:var(--body); }
+  .pill:hover { color:var(--text); border-color:#44444f; }
+  .pill.on { background:var(--text); color:var(--bg); border-color:var(--text); }
+
+  /* Chiffres */
+  .stats { display:grid; grid-template-columns:repeat(3, 1fr); border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin:48px 0; }
+  .stat { padding:22px 12px; text-align:center; }
+  .stat + .stat { border-left:1px solid var(--line); }
+  .stat strong { display:block; font-family:var(--display); font-size:clamp(22px, 4vw, 34px); font-weight:700; letter-spacing:-.02em; }
+  .stat span { font-size:13px; color:var(--muted); }
+
+  /* Grille */
+  .section-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:18px; }
+  .section-head h2 { font-family:var(--display); font-size:24px; margin:0; letter-spacing:-.02em; }
+  .section-head span { color:var(--muted); font-size:14px; }
+  .grid { display:grid; gap:18px; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); padding-bottom:64px; }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; transition:transform .2s, border-color .2s; }
+  .card:hover { transform:translateY(-3px); border-color:#3a3a44; }
+  .thumb { aspect-ratio:16/10; position:relative; display:grid; place-items:center; overflow:hidden; }
+  .thumb img { width:100%; height:100%; object-fit:cover; }
+  .thumb .play { width:46px; height:46px; border-radius:50%; background:rgba(0,0,0,.45); display:grid; place-items:center; backdrop-filter:blur(4px); }
+  .tag { position:absolute; top:12px; left:12px; font-size:11px; letter-spacing:.06em; text-transform:uppercase; background:rgba(11,11,13,.7); color:var(--text); padding:4px 9px; border-radius:6px; }
+  .card-body { padding:16px; display:flex; flex-direction:column; gap:6px; flex:1; }
+  .card-title { font-family:var(--display); font-weight:500; font-size:17px; letter-spacing:-.01em; }
+  .card-desc { color:var(--muted); font-size:14px; flex:1; }
+  .dl { margin-top:10px; display:flex; align-items:center; justify-content:center; gap:8px; background:var(--surface-2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:11px; font-family:var(--body); font-size:14px; cursor:pointer; }
+  .dl:hover { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+  .dl[aria-disabled="true"] { opacity:.5; cursor:not-allowed; }
+  .dl[aria-disabled="true"]:hover { background:var(--surface-2); color:var(--text); border-color:var(--line); }
+  .empty { grid-column:1/-1; text-align:center; color:var(--muted); padding:48px 0; }
+
+  footer { border-top:1px solid var(--line); padding:28px 0; color:var(--muted); font-size:13px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+
+  /* Diapositives d'accueil */
+  .intro { position:fixed; inset:0; z-index:50; background:var(--bg); display:none; flex-direction:column; }
+  .intro.show { display:flex; }
+  .intro-top { display:flex; justify-content:space-between; align-items:center; padding:18px 20px; }
+  .skip { background:none; border:0; color:var(--muted); font-family:var(--body); font-size:14px; cursor:pointer; padding:8px; }
+  .slides { flex:1; position:relative; overflow:hidden; }
+  .slide { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px 24px; opacity:0; transform:translateX(40px); transition:opacity .45s, transform .45s; pointer-events:none; }
+  .slide.active { opacity:1; transform:none; pointer-events:auto; }
+  .slide.prev { transform:translateX(-40px); }
+  .num { font-family:var(--display); font-size:14px; color:var(--accent); letter-spacing:.1em; margin-bottom:22px; }
+  .visual { width:min(260px, 60vw); aspect-ratio:1; border-radius:28px; margin-bottom:34px; display:grid; place-items:center; }
+  .slide h2 { font-family:var(--display); font-size:clamp(30px, 6vw, 52px); line-height:1.05; letter-spacing:-.03em; margin:0 0 14px; max-width:640px; }
+  .slide p { color:var(--muted); font-size:17px; max-width:440px; margin:0; }
+  .intro-bottom { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:22px 20px 30px; max-width:640px; width:100%; margin:0 auto; }
+  .dots { display:flex; gap:8px; }
+  .dot { width:8px; height:8px; border-radius:999px; background:var(--line); transition:width .3s, background .3s; }
+  .dot.active { width:28px; background:var(--accent); }
+  .next { background:var(--accent); color:var(--accent-ink); border:0; border-radius:999px; padding:15px 28px; font-family:var(--display); font-weight:500; font-size:16px; cursor:pointer; }
+
+  /* Espace compte */
+  .nav-right { display:flex; align-items:center; gap:10px; }
+  .account-btn { display:flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--line); color:var(--text); border-radius:999px; padding:6px 14px 6px 6px; font-family:var(--body); font-size:14px; cursor:pointer; }
+  .account-btn:hover { border-color:#44444f; }
+  .account-btn.out { padding:8px 14px; background:var(--text); color:var(--bg); border-color:var(--text); }
+  .avatar { width:28px; height:28px; border-radius:50%; background:var(--accent); color:var(--accent-ink); display:grid; place-items:center; font-weight:500; font-size:13px; overflow:hidden; }
+  .avatar img { width:100%; height:100%; object-fit:cover; }
+  .modal { position:fixed; inset:0; z-index:40; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; padding:20px; }
+  .modal.show { display:flex; }
+  .modal-box { background:var(--surface); border:1px solid var(--line); border-radius:20px; width:100%; max-width:400px; padding:28px; position:relative; }
+  .modal-close { position:absolute; top:14px; right:14px; background:none; border:0; color:var(--muted); font-size:22px; cursor:pointer; line-height:1; padding:6px; }
+  .modal-box h3 { font-family:var(--display); font-size:24px; letter-spacing:-.02em; margin:0 0 8px; }
+  .modal-box p { color:var(--muted); font-size:14px; margin:0 0 22px; }
+  .google { width:100%; display:flex; align-items:center; justify-content:center; gap:10px; background:#fff; color:#1f1f1f; border:0; border-radius:12px; padding:14px; font-family:var(--body); font-weight:500; font-size:15px; cursor:pointer; }
+  .google:hover { background:#f1f1f1; }
+  .rule { display:flex; gap:10px; align-items:flex-start; margin-top:18px; padding:12px 14px; background:var(--surface-2); border-radius:12px; font-size:13px; color:var(--muted); }
+  .rule svg { flex:none; margin-top:2px; color:var(--accent); }
+  .profile { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
+  .profile .avatar { width:52px; height:52px; font-size:20px; }
+  .profile-name { font-family:var(--display); font-weight:500; font-size:18px; }
+  .profile-mail { color:var(--muted); font-size:14px; word-break:break-all; }
+  .meter { background:var(--surface-2); border-radius:14px; padding:16px; margin-bottom:16px; }
+  .meter-top { display:flex; justify-content:space-between; font-size:14px; color:var(--muted); margin-bottom:10px; }
+  .meter-top b { color:var(--text); font-weight:500; }
+  .bar { height:8px; background:var(--line); border-radius:999px; overflow:hidden; }
+  .bar span { display:block; height:100%; background:var(--accent); border-radius:999px; transition:width .4s; }
+  .logout { width:100%; background:transparent; color:var(--text); border:1px solid var(--line); border-radius:12px; padding:13px; font-family:var(--body); font-size:15px; cursor:pointer; }
+  .logout:hover { border-color:#44444f; }
+  .alert { display:none; margin-top:16px; padding:12px 14px; border-radius:12px; background:#3a1518; color:#ffb4b4; font-size:14px; }
+  .alert.show { display:block; }
+  .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px); background:var(--text); color:var(--bg); padding:12px 18px; border-radius:12px; font-size:14px; opacity:0; transition:opacity .3s, transform .3s; z-index:60; pointer-events:none; max-width:calc(100% - 32px); text-align:center; }
+  .toast.show { opacity:1; transform:translateX(-50%); }
+
+  @media (max-width:560px) {
+    .account-btn .acc-label { display:none; }
+    .account-btn { padding:4px; }
+    .account-btn.out { padding:8px 12px; }
+    .account-btn.out .acc-label { display:inline; }
+    .search { padding:8px 8px 8px 16px; border-radius:14px; }
+    .search button { padding:13px 16px; }
+    .search .btn-label { display:none; }
+    .stat span { font-size:12px; }
+    .quota .q-label { display:none; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <h1>Creative Toolkit — Banque de vidéos</h1>
-  <div id="quota">Chargement…</div>
-</header>
-<div class="controls">
-  <input id="search" type="search" placeholder="Rechercher une vidéo…">
-  <select id="category"><option value="">Toutes les catégories</option></select>
-</div>
-<main id="grid" class="grid"></main>
-<p class="note">Le compteur de téléchargements est géré dans ton navigateur. Il ne s'applique pas à l'échelle du serveur.</p>
 
-<div id="intro" role="dialog" aria-modal="true" aria-label="Bienvenue">
-  <div class="slide-box">
-    <div class="slide active">
-      <div class="big" aria-hidden="true">🎬</div>
-      <h2>Bienvenue sur Creative Toolkit</h2>
-      <p>Une banque de vidéos pour tes projets, réunie en un seul endroit.</p>
-    </div>
-    <div class="slide">
-      <div class="big" aria-hidden="true">🔍</div>
-      <h2>Cherche en un instant</h2>
-      <p>Utilise la recherche et les catégories pour trouver la vidéo qu'il te faut.</p>
-    </div>
-    <div class="slide">
-      <div class="big" aria-hidden="true">⬇️</div>
-      <h2>Télécharge simplement</h2>
-      <p>Tu peux télécharger jusqu'à 35 vidéos par jour. Le compteur est affiché en haut de la page.</p>
-    </div>
-    <div class="dots">
-      <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
-    </div>
-    <div class="slide-actions">
-      <button class="ghost" id="skip">Passer</button>
-      <button id="next">Suivant</button>
-    </div>
+<div class="intro" id="intro" role="dialog" aria-modal="true" aria-label="Bienvenue sur Creative Toolkit">
+  <div class="intro-top">
+    <div class="logo"><span class="logo-mark">✦</span>Creative Toolkit</div>
+    <button class="skip" id="skip">Passer</button>
+  </div>
+  <div class="slides">
+    <section class="slide active">
+      <div class="num">01 / 03</div>
+      <div class="visual" style="background:linear-gradient(135deg,#c6ff3d,#3dffb0)">
+        <svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="#0b0b0d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z" fill="#0b0b0d"/></svg>
+      </div>
+      <h2>Ta banque de vidéos créatives</h2>
+      <p>Motion design, B-roll, textures : tout ce qu'il faut pour tes projets, au même endroit.</p>
+    </section>
+    <section class="slide">
+      <div class="num">02 / 03</div>
+      <div class="visual" style="background:linear-gradient(135deg,#7c5cff,#ff5ca8)">
+        <svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+      </div>
+      <h2>Trouve en quelques secondes</h2>
+      <p>Une grande barre de recherche et des catégories claires pour aller droit au but.</p>
+    </section>
+    <section class="slide">
+      <div class="num">03 / 03</div>
+      <div class="visual" style="background:linear-gradient(135deg,#ffb23d,#ff5c5c)">
+        <svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="#0b0b0d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5"/><path d="M4 19h16"/></svg>
+      </div>
+      <h2>35 téléchargements par jour</h2>
+      <p>Connecte-toi avec Google. Ton compteur est visible en haut de la page et se remet à zéro chaque jour.</p>
+    </section>
+  </div>
+  <div class="intro-bottom">
+    <div class="dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+    <button class="next" id="next">Suivant</button>
   </div>
 </div>
 
+<div class="modal" id="account-modal" role="dialog" aria-modal="true" aria-labelledby="account-title">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close" aria-label="Fermer">×</button>
+
+    <div id="view-out">
+      <h3 id="account-title">Ton espace</h3>
+      <p>Connecte-toi avec ton compte Google pour télécharger jusqu'à 35 vidéos par jour.</p>
+      <button class="google" id="google-btn">
+        <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+        Continuer avec Google
+      </button>
+      <div class="rule">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        <span>Un seul compte par adresse IP. Ton compte reste lié à l'adresse IP utilisée lors de ta première connexion.</span>
+      </div>
+    </div>
+
+    <div id="view-in" hidden>
+      <div class="profile">
+        <div class="avatar" id="profile-avatar"></div>
+        <div>
+          <div class="profile-name" id="profile-name"></div>
+          <div class="profile-mail" id="profile-mail"></div>
+        </div>
+      </div>
+      <div class="meter">
+        <div class="meter-top"><span>Téléchargements aujourd'hui</span><b id="meter-text">0 / 35</b></div>
+        <div class="bar"><span id="meter-bar" style="width:0%"></span></div>
+      </div>
+      <button class="logout" id="logout-btn">Se déconnecter</button>
+    </div>
+
+    <div class="alert" id="account-alert" role="alert"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<div class="wrap">
+  <nav class="nav">
+    <a href="#" class="logo"><span class="logo-mark">✦</span>Creative Toolkit</a>
+    <div class="nav-right">
+      <div class="quota" id="quota" hidden><span class="q-label">Restants aujourd'hui : </span><b id="quota-left">35</b> / 35</div>
+      <button class="account-btn out" id="account-btn"><span class="acc-label">Se connecter</span></button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <span class="eyebrow">Banque de vidéos créatives</span>
+    <h1>Des vidéos prêtes pour <em>tes idées</em>.</h1>
+    <p>Cherche, prévisualise et télécharge des clips pour tes montages, tes réseaux et tes projets clients.</p>
+    <form class="search" id="search-form" role="search">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="search" type="search" placeholder="Rechercher : transition, fond abstrait, ville de nuit…" aria-label="Rechercher une vidéo">
+      <button type="submit"><span class="btn-label">Rechercher</span><span aria-hidden="true"> →</span></button>
+    </form>
+    <div class="pills" id="pills"></div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><strong id="stat-count">0</strong><span>vidéos</span></div>
+    <div class="stat"><strong id="stat-cats">0</strong><span>catégories</span></div>
+    <div class="stat"><strong>35</strong><span>téléchargements / jour</span></div>
+  </div>
+
+  <div class="section-head" id="catalogue">
+    <h2>Catalogue</h2>
+    <span id="result-count"></span>
+  </div>
+  <main class="grid" id="grid"></main>
+
+  <footer>
+    <span>© Creative Toolkit</span>
+    <span>Un compte par adresse IP</span>
+  </footer>
+</div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
   const LIMIT = 35;
-  const KEY = 'creativetoolkit_downloads';
   const INTRO_KEY = 'creativetoolkit_intro_seen';
+  const GRADS = ['#c6ff3d,#3dffb0','#7c5cff,#ff5ca8','#ffb23d,#ff5c5c','#3dc2ff,#7c5cff','#ff5ca8,#ffb23d','#3dffb0,#3dc2ff'];
   let videos = [];
+  let activeCat = '';
 
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const today = () => new Date().toISOString().slice(0, 10);
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch {} }
+  };
 
-  function getQuota() {
-    let d = null;
-    try { d = JSON.parse(localStorage.getItem(KEY)); } catch {}
-    const used = d && d.date === today() ? d.count : 0;
-    return { used, remaining: Math.max(0, LIMIT - used) };
+  /* Compte : connexion Google via Supabase, règle IP et quota vérifiés côté serveur */
+  const CFG = window.CT_CONFIG || {};
+  const CONFIGURED = !!(CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY && window.supabase);
+  const sb = CONFIGURED ? window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY) : null;
+  const state = { session: null, remaining: null, checkedUser: null };
+  const $ = id => document.getElementById(id);
+
+  async function callFn(name) {
+    try {
+      const res = await fetch(`${CFG.SUPABASE_URL}/functions/v1/${name}`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${state.session.access_token}`, apikey: CFG.SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+        body: '{}'
+      });
+      let body = {}; try { body = await res.json(); } catch {}
+      return { ok: res.ok, status: res.status, body };
+    } catch {
+      return { ok: false, status: 0, body: { error: 'Connexion au serveur impossible. Réessaie.' } };
+    }
   }
 
-  function consumeQuota() {
-    const q = getQuota();
-    if (q.remaining <= 0) return false;
-    try { localStorage.setItem(KEY, JSON.stringify({ date: today(), count: q.used + 1 })); } catch {}
-    return true;
+  let toastTimer;
+  function toast(msg) {
+    const t = $('toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+  function showAlert(msg) { const a = $('account-alert'); a.textContent = msg || ''; a.classList.toggle('show', !!msg); }
+  function openModal() { $('account-modal').classList.add('show'); }
+  function closeModal() { $('account-modal').classList.remove('show'); showAlert(''); }
+
+  function profile() {
+    const u = state.session?.user; if (!u) return null;
+    const m = u.user_metadata || {};
+    const name = m.full_name || m.name || (u.email || '').split('@')[0];
+    return { name, email: u.email, avatar: m.avatar_url || m.picture, initial: (name || '?').charAt(0).toUpperCase() };
+  }
+  function avatarHTML(p) { return p.avatar ? `<img src="${esc(p.avatar)}" alt="" referrerpolicy="no-referrer">` : esc(p.initial); }
+
+  function renderAccount() {
+    const p = profile();
+    const btn = $('account-btn');
+    if (p) {
+      btn.classList.remove('out');
+      btn.innerHTML = `<span class="avatar">${avatarHTML(p)}</span><span class="acc-label">${esc(p.name.split(' ')[0])}</span>`;
+      btn.setAttribute('aria-label', 'Mon compte');
+      $('quota').hidden = state.remaining === null;
+      $('quota-left').textContent = state.remaining ?? '–';
+      $('view-out').hidden = true; $('view-in').hidden = false;
+      $('profile-avatar').innerHTML = avatarHTML(p);
+      $('profile-name').textContent = p.name;
+      $('profile-mail').textContent = p.email;
+      const used = state.remaining === null ? 0 : LIMIT - state.remaining;
+      $('meter-text').textContent = `${used} / ${LIMIT}`;
+      $('meter-bar').style.width = `${(used / LIMIT) * 100}%`;
+    } else {
+      btn.classList.add('out');
+      btn.innerHTML = '<span class="acc-label">Se connecter</span>';
+      btn.removeAttribute('aria-label');
+      $('quota').hidden = true;
+      $('view-out').hidden = false; $('view-in').hidden = true;
+    }
   }
 
-  function showQuota() {
-    const q = getQuota();
-    document.getElementById('quota').textContent = `Téléchargements restants aujourd'hui : ${q.remaining} / ${LIMIT}`;
+  async function onSession(session) {
+    state.session = session;
+    if (!session) { state.remaining = null; state.checkedUser = null; renderAccount(); render(); return; }
+    if (state.checkedUser === session.user.id) { renderAccount(); return; }
+    renderAccount();
+    const r = await callFn('account');
+    if (!r.ok) {
+      const msg = r.body.error || 'Connexion impossible.';
+      await sb.auth.signOut();
+      openModal(); showAlert(msg);
+      return;
+    }
+    state.checkedUser = session.user.id;
+    state.remaining = r.body.remaining;
+    renderAccount(); render();
   }
 
-  /* Diapositives : affichées à la première ouverture seulement */
-  let slideIndex = 0;
-  const slides = document.querySelectorAll('.slide');
-  const dots = document.querySelectorAll('.dot');
+  if (sb) {
+    sb.auth.onAuthStateChange((evt, session) => {
+      if (['INITIAL_SESSION', 'SIGNED_IN', 'SIGNED_OUT'].includes(evt)) setTimeout(() => onSession(session), 0);
+    });
+  }
 
-  function showSlide(i) {
-    slides.forEach((s, n) => s.classList.toggle('active', n === i));
+  $('account-btn').addEventListener('click', openModal);
+  $('modal-close').addEventListener('click', closeModal);
+  $('account-modal').addEventListener('click', e => { if (e.target.id === 'account-modal') closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  $('google-btn').addEventListener('click', async () => {
+    if (!sb) { showAlert("La connexion n'est pas encore configurée. Suis le guide SETUP.md du projet."); return; }
+    showAlert('');
+    const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + location.pathname } });
+    if (error) showAlert('Connexion Google impossible. Réessaie.');
+  });
+  $('logout-btn').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); closeModal(); toast('Tu es déconnecté.'); });
+
+  /* Diapositives de première ouverture */
+  const slides = [...document.querySelectorAll('.slide')];
+  const dots = [...document.querySelectorAll('.dot')];
+  let idx = 0;
+  function goTo(i) {
+    slides.forEach((s, n) => { s.classList.toggle('active', n === i); s.classList.toggle('prev', n < i); });
     dots.forEach((d, n) => d.classList.toggle('active', n === i));
     document.getElementById('next').textContent = i === slides.length - 1 ? 'Commencer' : 'Suivant';
+    idx = i;
   }
-
-  function closeIntro() {
-    document.getElementById('intro').classList.remove('show');
-    try { localStorage.setItem(INTRO_KEY, '1'); } catch {}
-  }
-
-  document.getElementById('next').addEventListener('click', () => {
-    if (slideIndex < slides.length - 1) { slideIndex++; showSlide(slideIndex); }
-    else closeIntro();
-  });
+  function closeIntro() { document.getElementById('intro').classList.remove('show'); store.set(INTRO_KEY, '1'); }
+  document.getElementById('next').addEventListener('click', () => idx < slides.length - 1 ? goTo(idx + 1) : closeIntro());
   document.getElementById('skip').addEventListener('click', closeIntro);
+  let touchX = null;
+  document.querySelector('.slides').addEventListener('touchstart', e => touchX = e.touches[0].clientX, { passive:true });
+  document.querySelector('.slides').addEventListener('touchend', e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (dx < -50 && idx < slides.length - 1) goTo(idx + 1);
+    if (dx > 50 && idx > 0) goTo(idx - 1);
+    touchX = null;
+  });
+  if (store.get(INTRO_KEY) !== '1') document.getElementById('intro').classList.add('show');
 
-  function maybeShowIntro() {
-    let seen = false;
-    try { seen = localStorage.getItem(INTRO_KEY) === '1'; } catch {}
-    if (!seen) document.getElementById('intro').classList.add('show');
+  /* Catalogue */
+  function renderPills() {
+    const cats = [...new Set(videos.map(v => v.category).filter(Boolean))];
+    document.getElementById('stat-cats').textContent = cats.length;
+    document.getElementById('pills').innerHTML = ['', ...cats].map(c =>
+      `<button class="pill ${c === activeCat ? 'on' : ''}" data-cat="${esc(c)}">${c ? esc(c) : 'Tout'}</button>`).join('');
   }
-
-  async function init() {
-    videos = await (await fetch('data/videos.json')).json();
-    const cats = [...new Set(videos.map(v => v.category))];
-    document.getElementById('category').innerHTML =
-      '<option value="">Toutes les catégories</option>' + cats.map(c => `<option>${esc(c)}</option>`).join('');
-    showQuota();
-    render();
-    maybeShowIntro();
-  }
+  document.getElementById('pills').addEventListener('click', e => {
+    const b = e.target.closest('.pill'); if (!b) return;
+    activeCat = b.dataset.cat; renderPills(); render();
+  });
 
   function render() {
-    const q = document.getElementById('search').value.toLowerCase();
-    const cat = document.getElementById('category').value;
-    const left = getQuota().remaining;
+    const q = document.getElementById('search').value.trim().toLowerCase();
+    const loggedIn = !!state.session;
+    const blocked = loggedIn && state.remaining === 0;
+    const label = !loggedIn ? 'Se connecter pour télécharger' : blocked ? 'Limite atteinte aujourd\'hui' : 'Télécharger';
     const list = videos.filter(v =>
-      (!cat || v.category === cat) &&
-      (!q || v.title.toLowerCase().includes(q) || v.description.toLowerCase().includes(q)));
+      (!activeCat || v.category === activeCat) &&
+      (!q || `${v.title} ${v.description} ${v.category}`.toLowerCase().includes(q)));
+    document.getElementById('result-count').textContent = `${list.length} résultat${list.length > 1 ? 's' : ''}`;
     const grid = document.getElementById('grid');
-    if (!list.length) { grid.innerHTML = '<p class="empty">Aucune vidéo trouvée.</p>'; return; }
-    grid.innerHTML = list.map(v => `
+    if (!list.length) { grid.innerHTML = '<p class="empty">Aucune vidéo ne correspond à ta recherche.</p>'; return; }
+    grid.innerHTML = list.map((v, i) => `
       <article class="card">
-        <div class="thumb">${v.thumbnail ? `<img src="${esc(v.thumbnail)}" alt="" style="width:100%;height:100%;object-fit:cover">` : 'Aperçu'}</div>
-        <div class="body">
-          <div class="cat">${esc(v.category)}</div>
-          <div class="title">${esc(v.title)}</div>
-          <div class="desc">${esc(v.description)}</div>
-          <button ${left <= 0 ? 'disabled' : ''} onclick="download('${esc(v.id)}')">
-            ${left <= 0 ? 'Limite atteinte aujourd\'hui' : 'Télécharger'}
+        <div class="thumb" style="background:linear-gradient(135deg,${GRADS[i % GRADS.length]})">
+          ${v.thumbnail ? `<img src="${esc(v.thumbnail)}" alt="">` : `<div class="play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></div>`}
+          ${v.category ? `<span class="tag">${esc(v.category)}</span>` : ''}
+        </div>
+        <div class="card-body">
+          <div class="card-title">${esc(v.title)}</div>
+          <div class="card-desc">${esc(v.description)}</div>
+          <button class="dl" data-id="${esc(v.id)}" aria-disabled="${blocked}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>
+            ${label}
           </button>
         </div>
       </article>`).join('');
   }
 
-  function download(id) {
-    const v = videos.find(x => x.id === id);
-    if (!v) return;
-    if (!consumeQuota()) { alert(`Limite de ${LIMIT} téléchargements atteinte pour aujourd'hui`); return; }
+  let downloading = false;
+  document.getElementById('grid').addEventListener('click', async e => {
+    const b = e.target.closest('.dl'); if (!b) return;
+    const v = videos.find(x => x.id === b.dataset.id); if (!v) return;
+    if (!state.session) { openModal(); return; }
+    if (state.remaining === 0) { toast(`Limite de ${LIMIT} téléchargements atteinte pour aujourd'hui.`); return; }
+    if (downloading) return;
+    downloading = true; b.setAttribute('aria-busy', 'true');
+    const r = await callFn('download');
+    downloading = false; b.removeAttribute('aria-busy');
+    if (!r.ok) {
+      if (r.status === 429) state.remaining = 0;
+      toast(r.body.error || 'Téléchargement impossible.');
+      if (r.status === 401 || r.status === 403) await sb.auth.signOut();
+      renderAccount(); render();
+      return;
+    }
+    state.remaining = r.body.remaining;
     const a = document.createElement('a');
-    a.href = `uploads/${encodeURIComponent(v.file)}`;
-    a.download = v.file;
+    a.href = `uploads/${encodeURIComponent(v.file)}`; a.download = v.file;
     document.body.appendChild(a); a.click(); a.remove();
-    showQuota();
-    render();
-  }
+    renderAccount(); render();
+    toast(`Téléchargement lancé. Il t'en reste ${state.remaining} aujourd'hui.`);
+  });
 
   document.getElementById('search').addEventListener('input', render);
-  document.getElementById('category').addEventListener('change', render);
-  init();
+  document.getElementById('search-form').addEventListener('submit', e => {
+    e.preventDefault(); render();
+    document.getElementById('catalogue').scrollIntoView({ behavior:'smooth' });
+  });
+
+  (async () => {
+    try { videos = await (await fetch('data/videos.json')).json(); } catch { videos = []; }
+    document.getElementById('stat-count').textContent = videos.length;
+    renderAccount(); renderPills(); render();
+  })();
 </script>
 </body>
 </html>
